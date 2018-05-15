@@ -2,24 +2,42 @@ version: '3' # specify docker-compose version
 
 # Define the services/containers to be run
 services:
-  musclr-client: # name of the first service
-    build: musclr-client # specify the directory of the Dockerfile
-    ports:
-      - "4200:4200" # specify port forwarding
+## MEAN SECTION
+#  musclr-client: # name of the first service
+#    build: musclr-client # specify the directory of the Dockerfile
+#    ports:
+#      - "4200:4200" # specify port forwarding
+#
+#  musclr-server: #name of the second service
+#    build: musclr-server # specify the directory of the Dockerfile
+#    ports:
+#      - "3000:3000" #specify ports forwarding
+#    links:
+#      - mongodb # link this service to the database service
+#
+#  mongodb: # name of the third service
+#    image: mongo:3 # specify image to build container from
+#    ports:
+#      - "27017:27017" # specify port forwarding
+#
+#  mongo-seed:
+#    build: mongo-seed
+#    links:
+#      - mongodb
 
-  musclr-server: #name of the second service
-    build: musclr-server # specify the directory of the Dockerfile
+## NEO SECTION
+
+  musclr-neo4j:
+    image: musclr-neo4j # WATCH OUT! here I use the image, so you need to build to run mvn install dockerfile:build in musclr-neo4j first. There's probably a better way...
     ports:
-      - "3000:3000" #specify ports forwarding
+      - "8080:8080"
     links:
-      - mongodb # link this service to the database service
+      - neo4j-database
 
-  mongodb: # name of the third service
-    image: mongo:3 # specify image to build container from
+  neo4j-database:
+    image: neo4j:3.3
+    environment:
+      - NEO4J_AUTH=neo4j/root
     ports:
-      - "27017:27017" # specify port forwarding
-
-  mongo-seed:
-    build: mongo-seed
-    links:
-      - mongodb
+      - "7474:7474"
+      - "7687:7687"
