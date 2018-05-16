@@ -2,7 +2,8 @@ version: '3' # specify docker-compose version
 
 # Define the services/containers to be run
 services:
-## MEAN SECTION
+## Musclr Mean
+
 #  musclr-client: # name of the first service
 #    build: musclr-client # specify the directory of the Dockerfile
 #    ports:
@@ -24,15 +25,17 @@ services:
 #    build: mongo-seed
 #    links:
 #      - mongodb
-
-## NEO SECTION
-
-  musclr-neo4j:
-    image: musclr-neo4j # WATCH OUT! here I use the image, so you need to build to run mvn install dockerfile:build in musclr-neo4j first. There's probably a better way...
-    ports:
-      - "8080:8080"
-    links:
-      - neo4j-database
+#
+### MusclR Neo4J
+#
+#  musclr-neo4j:
+#  # WATCH OUT! here I use the image, so you need to build the image
+#  # run mvn install dockerfile:build in musclr-neo4j first. There's probably a better way...
+#    image: musclr-neo4j
+#    ports:
+#      - "8080:8080"
+#    links:
+#      - neo4j-database
 
   neo4j-database:
     image: neo4j:3.3
@@ -41,3 +44,17 @@ services:
     ports:
       - "7474:7474"
       - "7687:7687"
+    volumes:
+      - ./neo4j/data:/data
+
+
+## MusclR GeneratR
+
+#  musclr-generatr:
+#  # WATCH OUT! here I use the image, so you need to build the image
+#  # run mvn install dockerfile:build in musclr-generatr first. There's probably a better way...
+#    image: musclr-generatr
+#    ports:
+#      - "8181:8080"
+#    links:
+#      - mongodb
